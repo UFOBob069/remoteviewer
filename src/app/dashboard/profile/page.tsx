@@ -6,7 +6,7 @@ import { getSellerProfile, createOrUpdateSellerProfile, SellerProfile } from "@/
 import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
-    const { user, userData, loading } = useAuth();
+    const { user, loading } = useAuth();
     const router = useRouter();
     const [saving, setSaving] = useState(false);
     const [profile, setProfile] = useState<Partial<SellerProfile>>({
@@ -44,8 +44,8 @@ export default function ProfilePage() {
             await createOrUpdateSellerProfile(user.uid, {
                 ...profile,
                 skills: skillsArray,
-                displayName: userData?.displayName || user.displayName || "Remote Viewer",
-                photoURL: userData?.photoURL || user.photoURL || "",
+                displayName: user.displayName || "Remote Viewer",
+                photoURL: user.photoURL || "",
             });
             alert("Profile updated successfully!");
         } catch (error) {
