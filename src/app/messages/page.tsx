@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useSearchParams } from "next/navigation";
 import { sendMessage, subscribeToConversationMessages, subscribeToConversations, Conversation, Message } from "@/lib/db/messages";
 import { getSellerProfile } from "@/lib/db/profiles";
 import { getUserProfile } from "@/lib/db/users";
 
-export default function MessagesPage() {
+function MessagesContent() {
     const { user } = useAuth();
     const searchParams = useSearchParams();
     const initialToUser = searchParams.get("to");
@@ -164,5 +164,13 @@ export default function MessagesPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function MessagesPage() {
+    return (
+        <Suspense fallback={<div className="p-8">Loading messages...</div>}>
+            <MessagesContent />
+        </Suspense>
     );
 }
